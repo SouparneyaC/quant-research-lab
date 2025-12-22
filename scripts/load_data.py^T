@@ -1,0 +1,45 @@
+python3 src/load_data.py
+
+import pandas as pd
+import os
+
+DATA_DIR = "data/okx"
+OUT_DIR = "dataset"
+os.makedirs(OUT_DIR, exist_ok=True)
+
+def load_okx(symbol):
+    """
+    Loads OKX 1-minute OHLCV data and returns a cleaned DataFrame.
+    """
+    path = os.path.join(DATA_DIR, f"{symbol}_1m.csv")
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"File not found: {path}")
+
+    df = pd.read_csv(path, header=None)
+
+    # OKX format usually looks like:
+    # [ts, open, high, low, close, volume, vol_ccy, ???, ???]
+    df = df.iloc[:, :6]  # first 6 columns are the real OHLCV
+    df.columns = ["ts", "open", "high", "low", "close", "volume"]
+
+    # Timestamp conversion
+    df["datetime"] = pd.to_datetime(df["ts"], unit="ms")
+
+    # Final clean DataFrame
+    df = df[["datetime", "open", "high", "low", "close", "volume"]]
+    df = df.sort_values("datetime").reset_index(drop=True)
+    df = df.dropna().drop_duplicates()
+
+    return df
+
+
+if __name__ == "__main__":
+    symbols = ["BTCUSDT", "ETHUSDT", "SOLUSDT", "DOGEUSDT"]
+
+    for sym in symbols:
+        print(f"Loading {sym} ...")
+        df = load_okx(sym)
+        out_path = os.path.join(OUT_DIR, f"{sym}.parquet")
+        df.to_parquet(out_path)
+        print(f"Saved → {out_path} ({len(df)} rows)")
+

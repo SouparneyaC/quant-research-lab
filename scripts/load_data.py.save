@@ -1,0 +1,22 @@
+
+
+import pandas as pd
+import os
+
+DATA_DIR = "data/okx"
+OUT_DIR = "dataset"
+os.makedirs(OUT_DIR, exist_ok=True)
+
+def load_okx(symbol):
+
+
+if __name__ == "__main__":
+    symbols = ["BTCUSDT", "ETHUSDT", "SOLUSDT", "DOGEUSDT"]
+
+    for sym in symbols:
+        print(f"Loading {sym} ...")
+        df = load_okx(sym)
+        out_path = os.path.join(OUT_DIR, f"{sym}.parquet")
+        df.to_parquet(out_path)
+        print(f"Saved → {out_path} ({len(df)} rows)")
+
