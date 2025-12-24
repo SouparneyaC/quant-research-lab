@@ -1,0 +1,5 @@
+Symbol,Model,R_Squared,RMSE,Persistence
+BTCUSDT,Ridge,0.274,0.00012,High
+ETHUSDT,Ridge,0.221,0.00015,High
+SOLUSDT,RandomForest,0.198,0.00019,Medium
+DOGEUSDT,RandomForest,0.172,0.00025,Medium

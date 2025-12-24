@@ -1,0 +1,5 @@
+Symbol,Model,Accuracy,F1_Score,Signal
+BTCUSDT,LogisticRegression,0.502,0.49,Noise
+ETHUSDT,LogisticRegression,0.498,0.48,Noise
+SOLUSDT,RandomForest,0.511,0.50,Weak
+DOGEUSDT,RandomForest,0.505,0.49,Noise
